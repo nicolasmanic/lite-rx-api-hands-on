@@ -22,3 +22,5 @@ The solution is available in the `complete` branch to compare, when you have fin
 A Kotlin version that takes advantage of [reactor-kotlin-extensions](https://github.com/reactor/reactor-kotlin-extensions) is available [here](https://github.com/eddumelendez/reactor-kotlin-workshop).
  
 More information available on [Reactor website](http://projectreactor.io).
+
+Partial explanations: http://musigma.org/java/2016/11/21/reactor.html

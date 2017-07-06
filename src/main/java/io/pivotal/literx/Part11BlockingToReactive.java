@@ -27,14 +27,27 @@ public class Part11BlockingToReactive {
 
 	// TODO Create a Flux for reading all users from the blocking repository deferred until the flux is subscribed, and run it with an elastic scheduler
 	Flux<User> blockingRepositoryToFlux(BlockingRepository<User> repository) {
-		return null;
+
+		/*
+		* Suppose we wish to convert a collection into a Flux. Perhaps obtaining the collection is expensive,
+		* so we defer(postpone) looking it up until necessary. In this case, we’ll also specify a Scheduler
+		* so that we don’t block our main thread. This scenario is a fast subscriber but slow publisher
+		* */
+
+		return Flux.defer(() -> Flux.fromIterable(repository.findAll())).subscribeOn(Schedulers.elastic());
 	}
 
 //========================================================================================
 
 	// TODO Insert users contained in the Flux parameter in the blocking repository using an elastic scheduler and return a Mono<Void> that signal the end of the operation
 	Mono<Void> fluxToBlockingRepository(Flux<User> flux, BlockingRepository<User> repository) {
-		return null;
+
+		/* In the reverse scenario, suppose we have a fast publisher and a slow subscriber such as storing a record in a database.
+		 * Using a Flux for the publisher, we can publish on a separate Scheduler.
+		 * Since we’ll be saving data, we’ll just return a Mono<Void> to indicate when the stream has finished processing*/
+
+		return flux.publishOn(Schedulers.elastic()).doOnNext(user -> repository.save(user)).then();
+
 	}
 
 }
