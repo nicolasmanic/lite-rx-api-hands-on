@@ -46,7 +46,7 @@ public class Part11BlockingToReactive {
 		 * Using a Flux for the publisher, we can publish on a separate Scheduler.
 		 * Since we’ll be saving data, we’ll just return a Mono<Void> to indicate when the stream has finished processing*/
 
-		return flux.publishOn(Schedulers.elastic()).doOnNext(user -> repository.save(user)).then();
+		return flux.doOnNext(user -> repository.save(user)).publishOn(Schedulers.elastic()).then();
 
 	}
 
